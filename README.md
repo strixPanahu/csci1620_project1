@@ -2,13 +2,13 @@
 
 Select any one of these labs (1, 2, 3, 9, and 12) and improve its code using the concepts we have covered in this class. Your project should have the items/features below:
 
-	- [ ] A. Code is organized into modules where applicable (lab 11 is a good example of code separation).
+	- [x] A. Code is organized into modules where applicable (lab 11 is a good example of code separation).
 
 	- [ ] B. Programs that use/retrieve/store data use files/databases/API.
 
-	- [ ] C. Data validation and exception handling is present.
+	- [x] C. Data validation and exception handling is present.
 
-	- [ ] D. Algorithms/data structures/data types used appropriately.
+	- [x] D. Algorithms/data structures/data types used appropriately.
 
 	- [ ] E. OOP best practices implemented (Separating code to classes, data hiding, inheritance - lab 10 and lab 12 are great examples).
 
@@ -16,10 +16,10 @@ Select any one of these labs (1, 2, 3, 9, and 12) and improve its code using the
 
 	- [ ] G. Proper documentation.
 
-	- [ ] H. Using descriptive variable names, class names, and file names.
+	- [x] H. Using descriptive variable names, class names, and file names.
 
-	- [ ] I. Docstrings for functions.
+	- [x] I. Docstrings for functions.
 
-	- [ ] J. Type hinting.
+	- [x] J. Type hinting.
 
 	- [ ] K. Public GitHub link submitted with all project files placed/merged into the main/master branch. The project files could range from python files, images, documents, images, sound files, text files, binary files, executable files, etc. (generally anything that is needed for the application to work).
