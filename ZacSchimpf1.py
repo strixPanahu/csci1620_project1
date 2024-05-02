@@ -2,133 +2,75 @@
     Zac Schimpf
     CSCI 1620 001/851
     Professor Owora
-    Week 01 - Lab 01
-    23/01/2024
+    Final - Project 1
+    29/4/2024
 """
+
+from csv import writer
+import gui
 
 
 class Voter:
     def __init__(self) -> None:
         """
-        Primary loop responsible for taking, tracking & printing votes
-        :return: None
+        Main logic structure that establishes candidates, accepts votes, and prints results
         """
-        candidates = ["John", "Jane"]
-        total_votes = []
+        self.VOTE_OPTIONS = ["Jane", "Jesse", "John"]
+        self._vote_results = {}
 
-        option = None
-        while option != 'x':
-            option = self.vote_menu()
-
-            if option != 'x':
-                # Shift value to account for list[] indexing
-                current_vote = self.candidate_menu() - 1
-
-                total_votes.append(candidates[current_vote])
-                print("Voted " + candidates[current_vote])
-
-        print(
-            self.breaker() + '\n' +
-            "John – " + str(total_votes.count("John")) +
-            ", Jane – " + str(total_votes.count("Jane")) +
-            ", Total – " + str(len(total_votes)) + '\n' +
-            self.breaker()
-        )
-
-
-    def vote_menu(self) -> str:
+    def export_to_csv(self, user_input: list) -> None:
         """
-        Primary menu containing navigation options
-        :return: Menu option, single-char string; e.g. 'v', 'x'
+        Formats export data and passes to output.csv in the cwd
+        :param user_input: A list[] of votes cast by the user
         """
+        self.set_results(user_input)
 
-        print(
-            self.breaker() + '\n' +
-            "VOTE MENU" + '\n' +
-            self.breaker() + '\n' +
-            "v: Vote" + '\n' +
-            "x: Exit"
-        )
-        option = input("Option: ")
-        return self.menu_validation(option)
+        with open("output.csv", 'w', newline='') as outbound_file:
+            csv_writer = writer(outbound_file, delimiter=',')
+            csv_writer.writerow(["Candidate", "Votes", "Percent"])
+            for key in self._vote_results:
+                csv_writer.writerow([key, self._vote_results[key][0], self._vote_results[key][1]])
 
-
-    def menu_validation(self, option) -> str:
+    def set_results(self, user_input: list) -> None:
         """
-        Clean & validate user's navigation option
-        :param option: Raw user input, single-char string; e.g. 'v', 'x'
-        :return: Validated option, single-char string; e.g. 'v', 'x'
+        Analyzes data by counting quantities and percentages
+        :param user_input: A list[] of votes cast by the user
         """
+        for option in self.VOTE_OPTIONS:
+            self._vote_results[option] = 0
 
-        option = option.strip().casefold()
+        for vote in user_input:
+            self._vote_results[vote] += 1
 
-        if option != 'v' and option != 'x':
-            option = self.vote_menu_redo()
+        self._vote_results = {candidate: votes for candidate, votes in sorted(
+            self._vote_results.items(), key=lambda current_value: current_value[1], reverse=True)}
 
-        return option
+        total_votes = 0
+        for key in self._vote_results:
+            total_votes += self._vote_results[key]
+        for key in self._vote_results:
+            percent = self._vote_results[key] / total_votes
+            self._vote_results[key] = [self._vote_results[key], f'{percent:.2f}']
 
-
-    def vote_menu_redo(self) -> str:
+    def __str__(self) -> str:
         """
-        Primary menu redo prompt
-        :return: raw user input
+        Console-level output of candidate results
+        :return: String formatted data
         """
+        output = "Candidate" + "\t" + "Votes" + "\t" + "Percent" + "\n"
+        for key in self._vote_results:  # double-tabbed to accommodate header width
+            output += (key
+                       + "\t\t" + str(self._vote_results[key][0])
+                       + "\t\t" + str(self._vote_results[key][1]) + "\n")
 
-        option = self.menu_validation(input("Invalid (v/x): "))
-        return option
-
-
-    def candidate_menu(self) -> str:
-        """
-        Secondary menu containing voter options
-        :return: Voter choice string; e.g. "John", "Jane"
-        """
-
-        print(
-            self.breaker() + '\n' +
-            "CANDIDATE MENU" + '\n' +
-            self.breaker() + '\n' +
-            "1: John" + '\n' +
-            "2: Jane"
-        )
-        option = input("Option: ")
-        return self.candidate_validation(option)
+        return output
 
 
-    def candidate_validation(self, option) -> int:
-        """
-        Clean & validate user's navigation option
-        :param option: Menu option, single-char string; e.g. '1', '2'
-        :return: Voter choice int; e.g. 1, 2
-        """
+if __name__ == "__main__":
+    election = Voter()
 
-        option = option.strip().casefold()
+    app = gui.GUI(election.VOTE_OPTIONS)
+    app.mainloop()
 
-        if option != '1' and option != '2':
-            option = self.candidate_menu_redo()
-
-        return int(option)
-
-
-    def candidate_menu_redo(self) -> str:
-        """
-        Secondary menu redo prompt
-        :return: raw user input
-        """
-
-        option = self.candidate_validation(input("Invalid (1/2): "))
-        return option
-
-
-    def breaker(self) -> str:
-        """
-        :return: Standardised size line break
-        """
-
-        breaker_len = 29
-        breaker_char = '-'
-        breaker_str = breaker_char * breaker_len
-        return breaker_str
-
-
-test = Voter()
+    election.export_to_csv(app.get_user_input())
+    print(election.__str__())
