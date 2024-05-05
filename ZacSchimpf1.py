@@ -1,11 +1,3 @@
-"""
-    Zac Schimpf
-    CSCI 1620 001/851
-    Professor Owora
-    Final - Project 1
-    29/4/2024
-"""
-
 from csv import writer
 import gui
 
@@ -27,9 +19,9 @@ class Voter:
 
         with open("output.csv", 'w', newline='') as outbound_file:
             csv_writer = writer(outbound_file, delimiter=',')
-            csv_writer.writerow(["Candidate", "Votes", "Percent"])
-            for key in self._vote_results:
-                csv_writer.writerow([key, self._vote_results[key][0], self._vote_results[key][1]])
+            csv_writer.writerow(["ID", "Vote"])
+            for entry in user_input:
+                csv_writer.writerow(entry)
 
     def set_results(self, user_input: list) -> None:
         """
@@ -40,7 +32,7 @@ class Voter:
             self._vote_results[option] = 0
 
         for vote in user_input:
-            self._vote_results[vote] += 1
+            self._vote_results[vote[1]] += 1
 
         self._vote_results = {candidate: votes for candidate, votes in sorted(
             self._vote_results.items(), key=lambda current_value: current_value[1], reverse=True)}
