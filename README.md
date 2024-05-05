@@ -8,7 +8,7 @@ ___
   - **Linux Kernel 6.2** or higher
 ___
 ### **Usage Guide** ###
-1. **Execute** the primary file, **ZacSchimpf.py**
+1. **Execute** the primary file, **ZacSchimpf1.py**
 2. **Enter ID and** select one **vote** option
     - Please note: Any missing or duplicate IDs and blank votes will be rejected
 3. **Repeat until all votes have been cast**
